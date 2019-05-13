@@ -177,12 +177,12 @@
 			<div class="recommend">
 				<div class="t-recommend">
 					<span style="width: 1px; height: 50px;border: 1px solid red;margin-right: 20px;padding: 12px 0 10px 0;"></span>
-					<span class="t-p-recommend">潮品推荐</span>
+					<span class="t-p-recommend">嗨转推荐</span>
 				</div>
 			</div>
 			<div class="recom-product" id="main">
 				<div class="list-recom-product">
-					<a class="recom-list" style="float: left;" href="#">
+					<!-- 					<a class="recom-list" style="float: left;" href="#">
 						<p><span id="recomT">希腊进口</span><br /><span id="recom-p">干红干白组合</span></p>
 						<img id="img-product" src="images/yinxiang.jpg" />
 					</a>
@@ -201,11 +201,14 @@
 					<a class="recom-list" href="#" v-for="values in list" v-bind:class="styletest(values)" @click="Allinfo(values.id)">
 						<p><span id="recomT">{{values.name}}</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
 						<img id="img-product" src="images/fengM.jpg" />
-					</a>
+					</a> -->
+					<div id="productArr">
+
+					</div>
 				</div>
 			</div>
 			<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-			<script>
+			<!-- 			<script>
 				new Vue({
 					el: '#main',
 					data: {
@@ -241,7 +244,7 @@
 					var toUrl = "./page/news.html?param=" + value;
 					window.location.href = toUrl;
 				}
-			</script>
+			</script> -->
 	</body>
 	<script src="js/mui.min.js"></script>
 	<script src="js/index.js"></script>
@@ -303,6 +306,35 @@
 
 					$('#leibiediv2').html(html)
 				}
+			},
+			error: function(xhr, type, errorThrown) {
+				console.log(type);
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		var url = "http://192.168.43.188:8080/product/select/product/18/0";
+		mui.ajax(url, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				var productList = data.data;
+				var html = '';
+				for (var i = 0; i < productList.length; i++) {
+					if (i == 0 || i % 2 == 0) {
+						html += '<a class="recom-list" href="#" style="float: left;"><p><span id="recomT">' + productList[i].productName +
+							'</span><br /><span id="recom-p">￥' + productList[i].productPrice +
+							'</span></p><img id="img-product" src="http://192.168.43.188:8088/image' + productList[i].productSrcOne +
+							'" /></a>'
+					} else {
+						html += '<a class="recom-list" href="#" style="float: right;"><p><span id="recomT">' + productList[i].productName +
+							'</span><br /><span id="recom-p">￥' + productList[i].productPrice +
+							'</span></p><img id="img-product" src="http://192.168.43.188:8088/image' + productList[i].productSrcOne +
+							'" /></a>'
+					}
+				}
+				$("#productArr").html(html)
 			},
 			error: function(xhr, type, errorThrown) {
 				console.log(type);
