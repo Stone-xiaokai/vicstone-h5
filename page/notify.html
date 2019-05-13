@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+				<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+
+				<script src="../js/mui.min.js"></script>
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/mui.css">
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+								<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" href="../index.html">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="video.html">
+				<span class="mui-icon mui-icon-videocam"></span>
+				<span class="mui-tab-label">发现</span>
+			</a>
+			<a id="pub" class="mui-tab-item" href="pubthing.html">
+				<div class="circleButtom">
+					<!-- <div class="mui-icon mui-icon-plusempty"></div> -->
+					<img src="../images/addhao.png" alt="">
+				</div>
+			</a>
+		
+			<a class="mui-tab-item mui-active" href="notify.html">
+				<span class="mui-icon mui-icon-chatbubble"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item" href="mine.html">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+aaa
+	</body>
+	<script type="text/javascript">
+					mui('.mui-bar-tab').on('tap', 'a', function() {
+			console.log(this.getAttribute('href'));
+			location.href = this.getAttribute('href');
+		});	
+	</script>
+
+</html>

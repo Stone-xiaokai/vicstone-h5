@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" href="../css/main.css?v=7" />
+		<link rel="stylesheet" href="../css/swiper.min.css?v=3" />
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+	</head>
+	<style type="text/css">
+	</style>
+	<body>
+		<!-- 此导航栏必须要引入mui.min.js才会生效 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">宝贝详情</h1>
+		</header>
+		<div id="goods-detail" class="hasToolbar">
+			<!-- {foreach from=$pics_list item=pic_info key=dekey} -->
+			<div class="swiper-container detailPic-swiper">
+				<div class="swiper-wrapper">
+					<!-- {foreach from=$pic_info.img_list item=pic key=dekey} -->
+					<div class="swiper-slide">
+						<a href="#">
+							<img src="../images/fengM.jpg" alt="aa">
+						</a>
+					</div>
+					<div class="swiper-slide">
+						<a href="#">
+							<img src="../images/yinxiang.jpg" alt="ab">
+						</a>
+					</div>
+					<!-- {/foreach} -->
+				</div>
+				   
+				<div class="detailPic-swiper-index">1/5</div>
+			</div>
+			<!-- {/foreach} -->
+			<!-- { if $pics_attr } -->
+			<div class="detail-images swiper-container" id="Allinfo">
+				{{list}}
+			</div>
+			<!-- {/if } -->
+			<div class="detail-name container bd0">
+				<p id="nametitle" class="name-title">
+					<!-- { if $goods.target_discount gt 0 } --><span class="name-redfont">aa折</span><!-- {/if} -->aa</p>
+
+				<p id="nameprice" class="name-price colorred">¥aa
+					<!-- { if $goods.target_market_price gt 0.00 } --><span class="grayfont line-throungh">¥{$goods.target_market_price}</span><!-- {/if} -->
+				</p>
+
+				<!-- {if $goods.jd_price gt 0 } -->
+				<p class="name-referprice grayfont">京东价格:¥aa</p><!-- {/if} -->
+			</div>
+			<div class="detail-carriage rowflex container bd0">
+				<div id="mallweight" class="carriage-items">aaKg<br> <span class="grayfont">商品重量</span></div>
+				<div id="transitfee" class="carriage-items">运费:¥aa<br> <span class="grayfont">aa至中国</span></div>
+				<div class="carriage-items">aa<br> <span class="grayfont carriage-shipper">发货商</span></div>
+			</div>
+			<div class="goods-detail container bd0">
+				<div class="share-header after-scale">
+					商品详情
+				</div>
+				<div class="goods-detail-info">
+					<p>aa</p>
+				</div>
+			</div>
+
+			<div class="goods-detail-2 container bd0">
+				<div class="share-header">
+					<img class="goods-detail-brand" src="../images/fengM.jpg" alt="aa">
+				</div>
+				<div class="goods-detail-info">
+					aa
+				</div>
+			</div>
+
+
+			<div class="detail-process container bd0">
+				<h3>买前须知</h3>
+				<ol class="hide">
+					<li>
+						修改订单：因海外采购的关系，及海外大多数品牌官
+						网规定，订单一旦生成，即不允许做任何更改，发货
+						后不能撤销订单。请您在下单前仔细核对您的商品
+					</li>
+					<li>
+						修改订单：因海外采购的关系，及海外大多数品牌官
+						网规定，订单一旦生成，即不允许做任何更改，发货
+						后不能撤销订单。请您在下单前仔细核对您的商品
+					</li>
+					<li>
+						下单后：由于库存实时更新，且部分国外网站限制购
+						买数量，如出现缺货或限制购买的情况，蜜赞会在7个
+						工作日内将您支付的金额返回到您原支付的账户。
+					</li>
+					<li>
+						修改订单：因海外采购的关系，及海外大多数品牌官
+						网规定，订单一旦生成，即不允许做任何更改，发货
+						后不能撤销订单。请您在下单前仔细核对您的商品
+					</li>
+				</ol>
+			</div>
+			<div class="detail-buy rowflex before-scale">
+				<a class="buy-btn btn-chat" type="button" id="shoucang">收藏宝贝</a>
+				<a class="buy-btn btn-shoppingCart">我要买</a>
+			</div>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/zepto.min.js"></script>
+	<script src="../js/swiper.min.js"></script>
+	<script src="../js/ponto.js?v=4"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '#Allinfo',
+			data: {
+				name: '',
+				list: ''
+			},
+			created() {
+				var Request = new Object();
+				Request = GetRequest();
+				console.log(Request["param"]);
+				document.getElementById("#content");
+				this.list = Request["param"];
+
+				function GetRequest() {
+
+					var url = location.search; //获取url中"?"符后的字串
+					var theRequest = new Object();
+					if (url.indexOf("?") != -1) {
+						var str = url.substr(1);
+						strs = str.split("&");
+						for (var i = 0; i < strs.length; i++) {
+							theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+						}
+					}
+					return theRequest;
+				}
+			},
+			methods: {
+
+
+			}
+
+
+		});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			var detailPicSwiper = $('.detailPic-swiper');
+			$('.detailPic-swiper').each(function() {
+				var $this = $(this);
+				var $pager = $this.find('.detailPic-swiper-index');
+				new Swiper($this, {
+					loop: true,
+					autoplay: 5000,
+					pagination: $this.find('.swiper-pagination'),
+					onSlideChangeEnd: function(swiper) {
+						$pager.html((parseInt(swiper.slides[swiper.activeIndex]
+								.getAttribute('data-swiper-slide-index')) + 1) +
+							'/' + (swiper.slides.length - 2));
+					}
+				});
+
+				$this.hide();
+			});
+			if ($('.detailPic-swiper').length === 1) {
+				$('.detailPic-swiper').show();
+			};
+			new Swiper('.detailPic-swiper', {
+				loop: true,
+				autoplay: 5000,
+				pagination: '.swiper-pagination',
+				onSlideChangeStart: function(swiper) {
+					$('.detailPic-swiper-index').text((parseInt($('.detailPic-swiper .swiper-slide-active').attr(
+							'data-swiper-slide-index')) + 1) +
+						'/' + ($('.detailPic-swiper .swiper-slide').length - 2));
+				}
+			});
+		});
+		document.getElementById("shoucang").addEventListener('click', function() {
+			var btnArray = ['否', '是'];
+			mui.confirm('确认收藏此宝贝？', '', btnArray, function(e) {
+				if (e.index == 1) {
+					mui.toast('收藏成功');
+				} else {
+					mui.toast('已取消收藏');
+				}
+			})
+		});
+	</script>
+</html>

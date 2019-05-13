@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/iconfont.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app1.css" />
+		<style>
+
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+	
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				/* border-radius: 50%; */
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name, oa-contact-position {
+				float: left;
+			}
+			#inputk {
+				margin: 5px 7px;
+			}
+			#slider img{  /* 
+				height: 150px;  */
+    }  
+		
+	.testleft{
+		float: left;
+	}
+	.testright{
+		float: right;
+	}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar-transparent">
+			<input id="input" class="searchInput" type="text" placeholder="搜索商品" onchange="searchV(this.value)" onfocus="getFocus(this)"
+			 onblur="loseBlur(this)" />
+			<img class="search" src="images/search.png" onclick="searchResult(this)" />
+		</header>
+		<!-- 使用mui-bar-tab切换a链接直接填写网址不生效 
+		mui里面将href默认跳转拦截了，请使用js添加事件监听进行跳转。-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<!-- 			<a class="mui-tab-item" href="page/video.html">
+				<span class="mui-icon mui-icon-videocam"></span>
+				<span class="mui-tab-label">发现</span>
+			</a> -->
+			<a id="pub" class="mui-tab-item">
+				<div class="circleButtom">
+					<!-- <div class="mui-icon mui-icon-plusempty"></div> -->
+					<img src="images/addhao.png" alt="">
+				</div>
+			</a>
+
+			<!-- 			<a class="mui-tab-item" href="page/chatlist.html">
+				<span class="mui-icon mui-icon-chatbubble"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">消息</span>
+			</a> -->
+			<a class="mui-tab-item" href="page/mine.html">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<div class="mui-content" style="position:absolute;top:0px;z-index: -1;">
+
+			<div id="slider" class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="images/yuantiao.jpg">
+						</a>
+					</div>
+					<!-- 第一张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="images/shuijiao.jpg">
+						</a>
+					</div>
+					<!-- 第二张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="images/muwu.jpg">
+						</a>
+					</div>
+					<!-- 第三张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="images/cbd.jpg">
+						</a>
+					</div>
+					<!-- 第四张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="images/yuantiao.jpg">
+						</a>
+					</div>
+					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="images/shuijiao.jpg">
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+			<div id="leibiediv1">
+
+			</div>
+			<div id="leibiediv2">
+
+			</div>
+			<div id="leibiediv3">
+
+			</div>
+			<div class="product">
+				<a class="w-yinx" href="#">
+					<p><span class="title">乐天下</span><br /><span class="t-yinx">插卡带蓝牙音箱</span></p>
+					<img class="yinx" src="images/yinxiang.jpg">
+				</a>
+				<a class="left-top" href="#">
+					<p style="float: left;"><span class="title" style="color: #fd444c;">智能语音遥控器</span><br /><span class="t-yinx">智能家居</span></p>
+					<img class="yuy" src="images/yuyin.png">
+				</a>
+				<div class="left-bottom">
+					<a class="l-b-left" href="#">
+						<p><span class="title" style="color: #24b8e0;">ROOTS</span><br /><span class="t-yinx">智能家居</span></p>
+						<img class="l-b-yuy" src="images/yuyin.png">
+					</a>
+					<a class="l-b-right" href="#">
+						<p><span class="title" style="color: #24b8e0;">秋冬上新</span><br /><span class="t-yinx">智能家居</span></p>
+						<img class="l-b-yuy" src="images/yuyin.png">
+					</a>
+				</div>
+			</div>
+			<div class="recommend">
+				<div class="t-recommend">
+					<span style="width: 1px; height: 50px;border: 1px solid red;margin-right: 20px;padding: 12px 0 10px 0;"></span>
+					<span class="t-p-recommend">潮品推荐</span>
+				</div>
+			</div>
+			<div class="recom-product" id="main">
+				<div class="list-recom-product">
+					<a class="recom-list" style="float: left;" href="#">
+						<p><span id="recomT">希腊进口</span><br /><span id="recom-p">干红干白组合</span></p>
+						<img id="img-product" src="images/yinxiang.jpg" />
+					</a>
+					<a class="recom-list" style="float: right;" href="#">
+						<p><span id="recomT">韩国家宝</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
+						<img id="img-product" src="images/fengM.jpg" />
+					</a>
+					<a class="recom-list" style="float: left;" href="#">
+						<p><span id="recomT">希腊进口</span><br /><span id="recom-p">干红干白组合</span></p>
+						<img id="img-product" src="images/yinxiang.jpg" />
+					</a>
+					<a class="recom-list" style="float: right;" href="#">
+						<p><span id="recomT">韩国家宝</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
+						<img id="img-product" src="images/fengM.jpg" />
+					</a>
+					<a class="recom-list" href="#" v-for="values in list" v-bind:class="styletest(values)" @click="Allinfo(values.id)">
+						<p><span id="recomT">{{values.name}}</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
+						<img id="img-product" src="images/fengM.jpg" />
+					</a>
+				</div>
+			</div>
+			<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				new Vue({
+					el: '#main',
+					data: {
+						name: '',
+						list: []
+					},
+					created() {
+						this.getAllProduct()
+					},
+					methods: {
+						getAllProduct: function() {
+							this.$http.get('http://192.168.43.188:8080/product/list').then(result => {
+								var result = result.body;
+								this.list = result.data.list;
+							})
+						},
+						styletest(value) {
+							if (value.id == 7 || value.id == 12 || value.id == 23) {
+								return "testleft";
+							} else {
+								return "testright";
+							}
+
+						}
+
+					}
+
+
+				});
+
+				function Allinfo(value) {
+
+					var toUrl = "./page/news.html?param=" + value;
+					window.location.href = toUrl;
+				}
+			</script>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/index.js"></script>
+	<script type="text/javascript">
+		var storage = window.localStorage;
+		if (storage.user != undefined) {
+			var toUrl1 = "page/pubthing.html";
+			$('#pub').attr('href', toUrl1);
+
+		} else {
+			var toUrl2 = "page/login.html";
+			$('#pub').attr('href', toUrl2);
+		}
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能;
+		});
+
+		mui('.mui-bar-tab').on('tap', 'a', function() {
+
+			location.href = this.getAttribute('href');
+		});
+		var slider = mui("#slider");
+		window.onload = function() {
+			slider.slider({
+				interval: 5000
+			});
+		}
+	</script>
+	<script type="text/javascript">
+		var url = "http://192.168.43.188:8080/productCategory/list/0";
+		mui.ajax(url, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				var leibie = data.data.list;
+				if (leibie.length >= 5) {
+					var html = '';
+					html += '<ul class="list">'
+					for (var i = 0; i < 5; i++) {
+						html +=
+							'<li><a class="circle" style="background: #e22425;" href="#"><img src="' + leibie[i].icon +
+							'"></a><p class="m-top">' + leibie[i].name + '</p></li>'
+					}
+					html += '</ul>'
+					$('#leibiediv1').html(html)
+				}
+
+				if (5 < leibie.length <= 10) {
+					var html = '';
+					html += '<ul class="list">'
+					for (var i = 5; i < leibie.length; i++) {
+						html +=
+							'<li><a class="circle" style="background: #e22425;" href="#"><img src="' + leibie[i].icon +
+							'"></a><p class="m-top">' + leibie[i].name + '</p></li>'
+
+					}
+					html += '</ul>'
+
+					$('#leibiediv2').html(html)
+				}
+			},
+			error: function(xhr, type, errorThrown) {
+				console.log(type);
+			}
+		});
+	</script>
+</html>

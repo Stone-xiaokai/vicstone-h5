@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style type="text/css">
+			.button {
+				width: 100px;
+				height: 50px;
+				line-height: 50px;
+			}
+
+
+			#listthing {
+				margin-top: 12px;
+				color: #222222;
+			}
+
+			.mui-icon-camera {
+				font-size: 60px;
+			}
+
+			#pub {
+				position: fixed;
+				bottom: 3px;
+				width: 98%;
+				height: 49px;
+				margin: 5px;
+			}
+
+			#desc {
+				height: 150px;
+				margin-top: 10px;
+			}
+
+
+			.imgtest {
+				height: 80px;
+				width: 80px;
+			}
+
+			.am-image-picker-item-remove {
+				width: 15px;
+				height: 15px;
+				position: absolute;
+				right: 6px;
+				top: 6px;
+				text-align: right;
+				vertical-align: top;
+				z-index: 2;
+				background-size: 15px auto;
+				background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle fill-opacity='.4' fill='%23404040' cx='8' cy='8' r='8'/%3E%3Cpath d='M11.898 4.101a.345.345 0 0 0-.488 0L8 7.511l-3.411-3.41a.345.345 0 0 0-.488.488l3.411 3.41-3.41 3.412a.345.345 0 0 0 .488.488L8 8.487l3.411 3.411a.345.345 0 0 0 .488-.488L8.488 8l3.41-3.412a.344.344 0 0 0 0-.487z' fill='%23FFF'/%3E%3C/g%3E%3C/svg%3E")
+			}
+
+			#imgs li {
+				position: relative;
+			}
+
+			/* 			.weui-uploader__file {
+				position: relative;
+			} */
+		</style>
+	</head>
+
+	<body>
+		<div id="main">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">发布宝贝</h1>
+				<a id="listthing" class="mui-pull-right">待卖清单</a>
+			</header>
+			<div style="background-color: #FFFFFF;height:160px;padding-top:50px">
+				<div style="float: left;height:80px;width:80px;margin-left:20px; margin-top:10px;border:1px dashed #AAAAAA">
+					<input id="camera" type="file" accept="image/*" capture="camera" href="javascript:;" style="margin-left:8px;"
+					 multiple="multiple" />
+					<div class="mui-icon mui-icon-camera" style="color:#AAAAAA"></div>
+					<div style="margin-left: 5px;
+    margin-bottom: 7px;color: #AAAAAA;font-size: 10px;">最多上传三张</div>
+				</div>
+				<!-- 				<div>
+					<img src="" id="img" class="imgtest"/>
+				</div> -->
+				<div id="imgdiv" style="float: left;margin-left:20px ;margin-top:10px;">
+					<ul id="imgs" style="display: flex;" class="mui-table-view mui-grid-view">
+
+					</ul>
+					<!-- 								<ul id="imgs" style="display: flex;" class="mui-table-view mui-grid-view">
+					<li class="weui-uploader__file" style="background-size:cover;background-image:url('../images/shuijiao.jpg');height: 80px;width: 80px;">
+						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
+					</li>
+					<li class="weui-uploader__file">
+						<img class="imgtest" src="../images/shuijiao.jpg">
+						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
+					</li>
+					<li class="weui-uploader__file">
+						<img class="imgtest" src="../images/shuijiao.jpg">
+						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
+					</li> -->
+					</ul>
+
+				</div>
+			</div>
+			<div class="mui-content">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>宝贝名称</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入宝贝名称" v-model="pubthing.name">
+					</div>
+					<div class="mui-input-row">
+						<label>品牌</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入宝贝品牌" v-model="pubthing.pinpai">
+					</div>
+					<div class="mui-input-row">
+						<label>价格</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入宝贝品牌" v-model="pubthing.jiage">
+					</div>
+					<div class="mui-input-row">
+						<label>分类</label>
+						<div>
+							<select id="first" onchange="setSecond(this.value)" style="width: 100px;" v-model="pubthing.dalei">
+								<option value="0" selected="selected">点击此处选择</option>
+								<option value="1">广西</option>
+								<option value="4">广东</option>
+							</select>
+							<select id="second" style="margin-left:10px;width: 100px;" v-model="pubthing.xiaolei">
+							</select>
+						</div>
+
+					</div>
+					<div class="mui-input-row" style="margin-top: 15px;">
+						<div class="mui-icon mui-icon-location" style="float: left;margin-left: 10px;"></div>
+						<div id="place" style="float: left"></div>
+					</div>
+				</form>
+			</div>
+			<textarea type="text" id="desc" class="mui-input-clear" v-model="pubthing.miaoshu" placeholder="在这里详细描述一下宝贝的转手原因/入手渠道&#13;&#10;规格尺寸/新旧程度和使用感受吧~"></textarea>
+			<div style="background-color: #007AFF;">
+				<button id="pub" class="mui-btn mui-btn-danger" v-on:click="publish">发布</button>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/items.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var url = "http://192.168.43.188:8080/productCategory/list/0";
+		mui.ajax(url, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				var leibie = data.data.list;
+				var sec = document.getElementById('first');
+				sec.options.length = 0; //清空二级菜单项
+				mui.each(leibie, function(index, item) {
+					var id = item.id,
+						name = item.name;
+					sec.options[0] = new Option("点击此处选择", "点击此处选择")
+					sec.options.add(new Option(name, id))
+				});
+
+			},
+			error: function(xhr, type, errorThrown) {
+				console.log(type);
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		mui.init();
+		var fileArr = [];
+
+		$(function() {
+			$('#imgs').on('click', '.am-image-picker-item-remove', function() {
+				$(this).closest('li').remove();
+				return false;
+			});
+		});
+
+		function setSecond(value) {
+			$('#first option:selected').text();
+			var zileibie = $('#first option:selected').val();
+			var url = "http://192.168.43.188:8080/productCategory/list/" + zileibie;
+			mui.ajax(url, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					var leibie = data.data.list;
+					var sec = document.getElementById('second');
+					sec.options.length = 0; //清空二级菜单项
+					mui.each(leibie, function(index, item) {
+						var id = item.id,
+							name = item.name;
+						sec.options[0] = new Option("点击此处选择", "点击此处选择")
+						sec.options.add(new Option(name, id))
+
+
+					});
+
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(type);
+				}
+			});
+		}
+
+		mui.plusReady(function() {
+			plus.geolocation.getCurrentPosition(translatePoint, function(e) {
+				mui.toast("异常:" + e.message);
+			});
+			// showLevel2();
+		});
+
+		function translatePoint(position) {
+			var currentLon = position.coords.longitude;
+			var currentLat = position.coords.latitude;
+			var city = position.address.city;
+			var district = position.address.district;
+			var street = position.address.street;
+			document.getElementById("place").innerHTML = city + " " + district + " " + street;
+		};
+
+		function plusReady() {
+			// 弹出系统选择按钮框  
+			mui("body").on("tap", ".imageup", function() {
+				page.imgUp();
+			})
+
+		}
+		var page = null;
+		page = {
+			imgUp: function() {
+				var m = this;
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: [{
+							title: "拍照"
+						},
+						{
+							title: "从相册中选择"
+						}
+					]
+				}, function(e) { //1 是拍照  2 从相册中选择  
+					switch (e.index) {
+						case 1:
+							getImage();
+							break;
+						case 2:
+							galleryImg();
+							break;
+					}
+				});
+			}
+			//摄像头  
+		}
+
+		//拍照添加文件
+		function getImage() {
+			var c = plus.camera.getCamera();
+			c.captureImage(function(e) {
+				plus.io.resolveLocalFileSystemURL(e, function(entry) {
+					// var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径  
+					console.log(entry);
+					console.log(e);
+					var imgSrc = entry.toLocalURL();
+					console.log(imgSrc);
+					setFile(imgSrc);
+					setHtml(imgSrc);
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(s) {
+				console.log("error" + s.message);
+			}, {
+				filename: "_doc/camera/"
+			})
+		}
+
+		function setHtml(path) {
+			var str = '';
+			var pathaa = '../images/shuijiao.jpg';
+			// str = '<li class="mui-table-view-cell mui-media mui-col-xs-6">' +
+			str = '<img class="imgtest" src="' + path + '">' +
+				'<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>';
+			//					'<div class="mui-media-body">'+
+			//						'<input type="text" class="remark" placeholder="备注">'+
+			//					'</div>'+
+			// '</li>';
+			var newLi = document.createElement("li");
+			newLi.innerHTML = str;
+			document.getElementById("imgs").append(newLi);
+
+
+
+		}
+
+		function setFile(fileSrc) {
+			var image = new Image();
+			const file = new Image(fileSrc);
+			image.src = fileSrc;
+			fileArr.push(image);
+		}
+
+		// 从相册添加文件
+		function galleryImg() {
+			// 从相册中选择图片  
+			plus.gallery.pick(function(e) {
+				for (var i in e.files) {
+					var fileSrc = e.files[i];
+					setFile(fileSrc);
+					setHtml(fileSrc);
+				}
+			}, function(e) {
+				console.log("取消选择图片");
+			}, {
+				filter: "image",
+				multiple: true,
+				//maximum: 5,
+				system: false,
+				onmaxed: function() {
+					plus.nativeUI.alert('最多只能选择5张图片');
+				}
+			});
+		}
+
+		if (window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener("plusready", plusReady, false);
+		}
+		var placeholder = "在这里详细描述一下宝贝的转手原因,入手渠道.规格尺寸,新旧程度和使用感受吧~";
+
+		new Vue({
+			el: '#main',
+			data: {
+				pubthing: {
+					name: '',
+					pinpai: '',
+					jiage: '',
+					dalei: '',
+					xiaolei: '',
+					miaoshu: '',
+				}
+			},
+			methods: {
+				getFile: function(e) {
+					var files = e.target.files;
+					console.log(files);
+				},
+				publish: function() {
+					var userId = '';
+					var storage = window.localStorage;
+					if (storage.user != undefined) {
+						userId = storage.user;
+					}
+					var name = this.pubthing.name;
+					var pinpai = this.pubthing.pinpai;
+					var jiage = this.pubthing.jiage;
+					var dalei = this.pubthing.dalei;
+					var xiaolei = this.pubthing.xiaolei;
+					var miaoshu = this.pubthing.miaoshu;
+
+					//获取图片元素
+					// 					var files = document.getElementsByClassName('imgtest');
+					// 					var fileSrc = files.src;
+					// 					// console.log(files[0].src);
+					// 					const file = new Image(files[0].src);
+					// console.log(file.name);
+					// const fileimg = new File(files[0].src,'Screenshot_2019-05-10-10-25-41-741_com.miui.home.png');
+					let formData = new FormData();
+					formData.append('file', document.getElementById('camera').files);
+					console.log(document.getElementById('camera').files[0])
+					console.log(filearrs.length)
+					formData.append('file1', filearrs[0]);
+					formData.append('file2', filearrs[1]);
+					formData.append('file3', filearrs[2]);
+					this.$http.post('http://192.168.43.188:8080/upload/setFileUploads', formData, {
+						method: 'post',
+						headers: {
+							'Content-Type': 'multipart/form-data'
+						}
+					}).then(function(res) {
+						var pic1 = res.data.data.path[0];
+						var pic2 = res.data.data.path[1];
+						var pic3 = res.data.data.path[2];
+						var dizhis = $("#place").text();
+						console.log(userId + "," + name + "," + pinpai + "," + jiage + "," + dalei + "," + xiaolei + "," + dizhis +
+							"," + miaoshu + "," + pic1 + "," + pic2 + "," + pic3); //
+
+						this.$http.post('http://192.168.43.188:8080/product/save/product', {
+							productName: name,
+							productBrand:pinpai,
+							productPrice:jiage,
+							productBigCategoryId:dalei,
+							productSmallCategoryId:xiaolei,
+							productAddress:dizhis,
+							productText:miaoshu,
+							productSrcOne:pic1,
+							productSrcTwo:pic2,
+							productSrcThree:pic3,
+							productStatus:"1",
+							productUserId:userId,
+							productRecommend:"0"
+						}, {
+							emulateJSON: true
+						}).then(result => {
+							var result = result.body;
+							console.log(result.code);
+							console.log(result.data);
+						});
+					}).catch(function(error) {
+						console.log(error);
+					})
+				}
+			}
+		});
+		var filearrs = [];
+		window.onload = function() {
+			var fileTag = document.getElementById('camera');
+			fileTag.onchange = function() {
+				var file = fileTag.files[0];
+				filearrs.push(file);
+				console.log(filearrs.length);
+				var fileReader = new FileReader();
+				fileReader.onloadend = function() {
+
+					if (fileReader.readyState == fileReader.DONE) {
+						var newLi = document.createElement("li");
+						newLi.innerHTML = '<img class="imgtest" src="' + fileReader.result + '" />' +
+							'<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>';
+						document.getElementById("imgs").append(newLi);
+					}
+
+				};
+
+				fileReader.readAsDataURL(file);
+			}
+		}
+	</script>
+</html>
