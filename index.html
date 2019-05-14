@@ -182,69 +182,12 @@
 			</div>
 			<div class="recom-product" id="main">
 				<div class="list-recom-product">
-					<!-- 					<a class="recom-list" style="float: left;" href="#">
-						<p><span id="recomT">希腊进口</span><br /><span id="recom-p">干红干白组合</span></p>
-						<img id="img-product" src="images/yinxiang.jpg" />
-					</a>
-					<a class="recom-list" style="float: right;" href="#">
-						<p><span id="recomT">韩国家宝</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
-						<img id="img-product" src="images/fengM.jpg" />
-					</a>
-					<a class="recom-list" style="float: left;" href="#">
-						<p><span id="recomT">希腊进口</span><br /><span id="recom-p">干红干白组合</span></p>
-						<img id="img-product" src="images/yinxiang.jpg" />
-					</a>
-					<a class="recom-list" style="float: right;" href="#">
-						<p><span id="recomT">韩国家宝</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
-						<img id="img-product" src="images/fengM.jpg" />
-					</a>
-					<a class="recom-list" href="#" v-for="values in list" v-bind:class="styletest(values)" @click="Allinfo(values.id)">
-						<p><span id="recomT">{{values.name}}</span><br /><span id="recom-p">蜂蜜柚子茶</span></p>
-						<img id="img-product" src="images/fengM.jpg" />
-					</a> -->
 					<div id="productArr">
-
 					</div>
 				</div>
 			</div>
 			<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-			<!-- 			<script>
-				new Vue({
-					el: '#main',
-					data: {
-						name: '',
-						list: []
-					},
-					created() {
-						this.getAllProduct()
-					},
-					methods: {
-						getAllProduct: function() {
-							this.$http.get('http://192.168.43.188:8080/product/list').then(result => {
-								var result = result.body;
-								this.list = result.data.list;
-							})
-						},
-						styletest(value) {
-							if (value.id == 7 || value.id == 12 || value.id == 23) {
-								return "testleft";
-							} else {
-								return "testright";
-							}
 
-						}
-
-					}
-
-
-				});
-
-				function Allinfo(value) {
-
-					var toUrl = "./page/news.html?param=" + value;
-					window.location.href = toUrl;
-				}
-			</script> -->
 	</body>
 	<script src="js/mui.min.js"></script>
 	<script src="js/index.js"></script>
@@ -286,7 +229,7 @@
 					html += '<ul class="list">'
 					for (var i = 0; i < 5; i++) {
 						html +=
-							'<li><a class="circle" style="background: #e22425;" href="#"><img src="' + leibie[i].icon +
+							'<li><a class="circle" style="background: #e22425;" href="./page/classify.html?param='+ leibie[i].id +'"><img src="' + leibie[i].icon +
 							'"></a><p class="m-top">' + leibie[i].name + '</p></li>'
 					}
 					html += '</ul>'
@@ -298,7 +241,7 @@
 					html += '<ul class="list">'
 					for (var i = 5; i < leibie.length; i++) {
 						html +=
-							'<li><a class="circle" style="background: #e22425;" href="#"><img src="' + leibie[i].icon +
+							'<li><a class="circle" style="background: #e22425;" href="./page/classify.html?param='+ leibie[i].id +'"><img src="' + leibie[i].icon +
 							'"></a><p class="m-top">' + leibie[i].name + '</p></li>'
 
 					}
@@ -323,12 +266,12 @@
 				var html = '';
 				for (var i = 0; i < productList.length; i++) {
 					if (i == 0 || i % 2 == 0) {
-						html += '<a class="recom-list" href="#" style="float: left;"><p><span id="recomT">' + productList[i].productName +
+						html += '<a class="recom-list" href="./page/news.html?param='+ productList[i].productId +'" style="float: left;"><p><span id="recomT">' + productList[i].productName +
 							'</span><br /><span id="recom-p">￥' + productList[i].productPrice +
 							'</span></p><img id="img-product" src="http://192.168.43.188:8088/image' + productList[i].productSrcOne +
 							'" /></a>'
 					} else {
-						html += '<a class="recom-list" href="#" style="float: right;"><p><span id="recomT">' + productList[i].productName +
+						html += '<a class="recom-list" href="./page/news.html?param='+ productList[i].productId +'" style="float: right;"><p><span id="recomT">' + productList[i].productName +
 							'</span><br /><span id="recom-p">￥' + productList[i].productPrice +
 							'</span></p><img id="img-product" src="http://192.168.43.188:8088/image' + productList[i].productSrcOne +
 							'" /></a>'
