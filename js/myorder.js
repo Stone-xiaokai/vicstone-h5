@@ -11,19 +11,19 @@ var storage = window.localStorage;
 		}
 		var html = '';
 		var imaurl = 'http://192.168.43.188:8088/image/20190513/73e40b62f2b24b1e8ce5f8a9f3e69bf8.jpeg'
-		var url = "http://192.168.43.188:8080/product/select/product/" + userId + "/1";
+		var url = "http://192.168.43.188:8080/order/getOrderDetailList/" + userId;
 		mui.ajax(url, {
 			dataType: 'json', //服务器返回json格式数据
 			type: 'get', //HTTP请求类型
 			timeout: 10000, //超时时间设置为10秒；
 			success: function(data) {
-				var mypub = data.data;
+				console.log("success");
+				var mypub = data.data.list;
 				if (mypub.length != 0) {
 					for (var i = 0; i < mypub.length; i++) {
 						console.log(mypub[i].productName);
 						html +=
-							'<div  class="shoppingCart"><div class="layer"></div><div class="itemName"><i class="iconfont icon-yuan itemsSel"></i><em class="mui-icon mui-icon-home home"></em><span>' +
-							mypub[i].productSmallCategoryId + '</span></div><ul class="ulList">'
+							'<a href="../page/seller.html?param='+ mypub[i].productUserId+'"><div class="shoppingCart"><div class="layer"></div><ul class="ulList">'
 						html += '<li class="liList mui-table-view-cell">'
 						html += '<div class="yuan"><i class="iconfont icon-yuan itemSel"></i></div>'
 						html += '<div class="shopName"><img src="http://192.168.43.188:8088/image' + mypub[i].productSrcOne +
@@ -39,17 +39,18 @@ var storage = window.localStorage;
 						html += '</div>'
 						html += '</div>'
 						html += '</li>'
-						html += '</ul></div>'
+						html += '</ul></div></a>'
 					}
 				$('.mui-scroll').html(html)
 				} else {
 					html +=
-						'<div class="emptyBox"><div class="emptyImg"><img src="../images/sudoku_18.jpg" /></div><div class="emptyWord">将自己的闲置发动起来吧...</div><a style="color: #000000;" href="../page/pubthing.html"><div class="emptyBtn">去发布</div></a></div>'
+						'<div class="emptyBox"><div class="emptyImg"><img src="../images/sudoku_12.jpg" /></div><div class="emptyWord">快去嗨转首页挑选宝贝下单吧</div><a style="color: #000000;" href="../index.html"><div class="emptyBtn">浏览宝贝</div></a></div>'
 				}
 
 				$('#shoppingList').html(html)
 			},
 			error: function(xhr, type, errorThrown) {
+				console.log("error");
 				console.log(type);
 			}
 		});

@@ -93,7 +93,7 @@
 			</div>
 			<div class="detail-buy rowflex before-scale">
 				<a class="buy-btn btn-chat" type="button" id="shoucang">收藏宝贝</a>
-				<a class="buy-btn btn-shoppingCart">我要买</a>
+				<a class="buy-btn btn-shoppingCart" type="button" id="goumai">我要买</a>
 			</div>
 		</div>
 	</body>
@@ -103,6 +103,12 @@
 	<script src="../js/swiper.min.js"></script>
 	<script src="../js/ponto.js?v=4"></script>
 	<script type="text/javascript">
+		var productIdOut = '';
+		var storage = window.localStorage;
+		var userIdOut = '';
+		if (storage.user != undefined) {
+			userIdOut = storage.user;
+		}
 		new Vue({
 			el: '#Allinfo',
 			data: {
@@ -113,7 +119,7 @@
 				productBigCategoryId: '',
 				productBigCategoryName: '',
 				productSmallCategoryId: '',
-				productSmallCategoryName:'',
+				productSmallCategoryName: '',
 				productAddress: '',
 				productText: '',
 				productSrcOne: '',
@@ -126,6 +132,7 @@
 			created() {
 				var Request = new Object();
 				Request = GetRequest();
+				productIdOut = Request["param"];
 				console.log(Request["param"]);
 				document.getElementById("#content");
 				this.productId = Request["param"];
@@ -225,9 +232,81 @@
 			var btnArray = ['否', '是'];
 			mui.confirm('确认收藏此宝贝？', '', btnArray, function(e) {
 				if (e.index == 1) {
-					mui.toast('收藏成功');
+
+					console.log(productIdOut);
+					console.log(userIdOut);
+					var requData = {
+						collectProductId: productIdOut,
+						collectUserId: userIdOut
+					};
+					var url = "http://192.168.43.188:8080/order/insertCollect";
+					mui.ajax(url, {
+						data: requData,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						contentType: 'application/json;charset=UTF-8',
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							console.log(data.data);
+							mui.toast('宝贝收藏成功');
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log(type);
+						}
+					});
 				} else {
 					mui.toast('已取消收藏');
+				}
+			})
+		});
+		document.getElementById("goumai").addEventListener('click', function() {
+			var price = document.getElementById("nameprice").innerText;
+			var btnArray = ['否', '是'];
+			mui.confirm('确认花费  ' + price + '  购买此宝贝？', '', btnArray, function(e) {
+				if (e.index == 1) {
+
+					console.log(productIdOut);
+					console.log(userIdOut);
+					var requData = {
+						productId: productIdOut,
+						userId: userIdOut
+					};
+					var url = "http://192.168.43.188:8080/order/insertOrder";
+					mui.ajax(url, {
+						data: requData,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						contentType: 'application/json;charset=UTF-8',
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							console.log("success")
+							console.log(data.data);
+							mui.alert('已创建订单', '嗨转小Tip', function() {
+							mui.openWindow({
+								id: 'index',
+								url: '../index.html',
+								createNew:true,
+								show: {
+									aniShow: 'pop-in'
+								},
+								extras: { //extras里面的就是参数了
+									name: data.data
+								},
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+								}
+							});
+							});
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log(type);
+						}
+					});
+				} else {
+					// mui.toast('已取消购买');
+					mui.alert('已取消购买', '嗨转小Tip', function() {
+
+					});
 				}
 			})
 		});

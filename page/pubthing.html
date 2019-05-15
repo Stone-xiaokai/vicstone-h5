@@ -79,30 +79,15 @@
 			<div style="background-color: #FFFFFF;height:160px;padding-top:50px">
 				<div style="float: left;height:80px;width:80px;margin-left:20px; margin-top:10px;border:1px dashed #AAAAAA">
 					<input id="camera" type="file" accept="image/*" capture="camera" href="javascript:;" style="margin-left:8px;"
-					 multiple="multiple" />
-					<div class="mui-icon mui-icon-camera" style="color:#AAAAAA"></div>
+					 multiple="multiple" placeholder="必须上传三张图片"/>
+					<!-- <div class="mui-icon mui-icon-camera" style="color:#AAAAAA"></div> -->
 					<div style="margin-left: 5px;
-    margin-bottom: 7px;color: #AAAAAA;font-size: 10px;">最多上传三张</div>
+    margin-bottom: 7px;color: #AAAAAA;font-size: 12px;">最多上传三张</div>
 				</div>
-				<!-- 				<div>
-					<img src="" id="img" class="imgtest"/>
-				</div> -->
 				<div id="imgdiv" style="float: left;margin-left:20px ;margin-top:10px;">
 					<ul id="imgs" style="display: flex;" class="mui-table-view mui-grid-view">
 
 					</ul>
-					<!-- 								<ul id="imgs" style="display: flex;" class="mui-table-view mui-grid-view">
-					<li class="weui-uploader__file" style="background-size:cover;background-image:url('../images/shuijiao.jpg');height: 80px;width: 80px;">
-						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
-					</li>
-					<li class="weui-uploader__file">
-						<img class="imgtest" src="../images/shuijiao.jpg">
-						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
-					</li>
-					<li class="weui-uploader__file">
-						<img class="imgtest" src="../images/shuijiao.jpg">
-						<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>
-					</li> -->
 					</ul>
 
 				</div>
@@ -396,24 +381,40 @@
 
 						this.$http.post('http://192.168.43.188:8080/product/save/product', {
 							productName: name,
-							productBrand:pinpai,
-							productPrice:jiage,
-							productBigCategoryId:dalei,
-							productSmallCategoryId:xiaolei,
-							productAddress:dizhis,
-							productText:miaoshu,
-							productSrcOne:pic1,
-							productSrcTwo:pic2,
-							productSrcThree:pic3,
-							productStatus:"1",
-							productUserId:userId,
-							productRecommend:"0"
+							productBrand: pinpai,
+							productPrice: jiage,
+							productBigCategoryId: dalei,
+							productSmallCategoryId: xiaolei,
+							productAddress: dizhis,
+							productText: miaoshu,
+							productSrcOne: pic1,
+							productSrcTwo: pic2,
+							productSrcThree: pic3,
+							productStatus: "1",
+							productUserId: userId,
+							productRecommend: "0"
 						}, {
 							emulateJSON: true
 						}).then(result => {
 							var result = result.body;
 							console.log(result.code);
 							console.log(result.data);
+							mui.alert('发布成功了哦', '嗨转小Tip', function() {
+								mui.openWindow({
+									id: 'index',
+									url: '../index.html',
+									createNew: true,
+									show: {
+										aniShow: 'pop-in'
+									},
+									extras: { //extras里面的就是参数了
+										// name: data.data
+									},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+									}
+								});
+							});
 						});
 					}).catch(function(error) {
 						console.log(error);

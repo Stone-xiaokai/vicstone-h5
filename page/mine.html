@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="mine-style">
-			<a class="mine-cell" href="#javasript">
+			<a class="mine-cell" id="myorder">
 				<span class="mui-icon icon-order" style="line-height: 60px; color: #e22425;"></span>
 				<span style="color: #222;line-height: 55px;">我的订单</span>
 				<span class="mui-icon mui-icon-arrowright" style="line-height: 55px;color: #aaa;float: right;"></span>
@@ -60,7 +60,7 @@
 		</div>
 		<div class="line-bottom"></div>
 		<div class="mine-style" style="margin-top:10px;">
-			<a class="mine-cell" href="#javasript">
+			<a class="mine-cell" id="myshoucang">
 				<span class="mui-icon icon-shoucang1" style="line-height: 60px; color: orange;"></span>
 				<span style="color: #222;line-height: 55px;">收藏商品</span>
 				<span class="mui-icon mui-icon-arrowright" style="line-height: 55px;color: #aaa;float: right;"></span>
@@ -100,6 +100,10 @@
 			$('#pub').attr('href', toUrl3);
 			var toUrlMypub = "mypub.html";
 			$('#mypub').attr('href', toUrlMypub);
+			var toUrlMyorder = "myorder.html";
+			$('#myorder').attr('href', toUrlMyorder);
+			var toUrlMyShoucang = "mycollect.html";
+			$('#myshoucang').attr('href', toUrlMyShoucang);
 			document.getElementById("username").innerHTML = storage.username;
 			document.getElementById("logining").style.display = "none";
 			document.getElementById("username").style.display = "inline";
@@ -109,6 +113,8 @@
 			var toUrl4 = "login.html";
 			$('#pub').attr('href', toUrl4);
 			$('#mypub').attr('href', toUrl4);
+			$('#myorder').attr('href', toUrl4);
+			$('#myshoucang').attr('href', toUrl4);
 		}
 		mui('.mui-bar-tab').on('tap', 'a', function() {
 			location.href = this.getAttribute('href');

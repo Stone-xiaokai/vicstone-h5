@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/com.css">
+		<link href="../css/iconfont.css" rel="stylesheet" />
+		<link href="../css/seller.css" rel="stylesheet" />
+		<!--App自定义的css-->
+		<style>
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">卖家信息</h1>
+		</header>
+
+		<div class="mui-content mui-row mui-fullscreen" id="shoppingList">
+			<div class="mui-scroll mui-col-xs-9">
+
+			</div>
+			<!-- 			<div class="emptyBox" style="display: none;">
+				<div class="emptyImg">
+					<img src="../images/gouwuche-nostate_03.jpg" />
+				</div>
+				<div class="emptyWord">富豪的购物车从不会空的...</div>
+				<a style="color: #000000;">
+					<div class="emptyBtn">去购物</div>
+				</a>
+			</div> -->
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) return unescape(r[2]);
+				return null;
+			}
+			var ProductUserId = decodeURI(GetQueryString("param"), "utf-8");
+			console.log(ProductUserId);
+			var html='';
+			var url = "http://192.168.43.188:8080/member/" + ProductUserId;
+			mui.ajax(url, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					console.log("success");
+					var mypub = data.data;
+					console.log(mypub);
+					html +=
+						'<div class="emptyBox"><div class="emptyImg">卖家姓名' + mypub.username + '</div><div class="emptyWord">联系方式' + mypub.phone +
+						'</div></div>'
+
+					$('#shoppingList').html(html)
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log("error");
+					console.log(type);
+				}
+			});
+		</script>
+	</body>
+
+</html>
