@@ -31,7 +31,13 @@ mui.ajax(url, {
 			var contentOut = [];
 			// 			console.log(contentOut.length);
 			var eid = mypub[i].id;
-			var url = "http://192.168.43.188:8080/product/select/productBySmallLei/" + mypub[i].id;
+			var storage = window.localStorage;
+			if (storage.user != undefined) {
+				var url = "http://192.168.43.188:8080/product/select/productBySmallLeiUser/" + mypub[i].id+"/"+storage.user;
+
+			} else {
+				var url = "http://192.168.43.188:8080/product/select/productBySmallLei/" + mypub[i].id;
+			}
 			var wareListOut = [];
 			mui.ajax(url, {
 				dataType: 'json', //服务器返回json格式数据

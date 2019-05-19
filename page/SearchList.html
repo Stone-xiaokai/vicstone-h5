@@ -61,7 +61,13 @@
 		}
 		var ProductName = decodeURI(GetQueryString("param"), "utf-8");
 		console.log("name:" + ProductName);
-		var url = "http://192.168.43.188:8080/product/select/selectByMoHu/" + ProductName;
+		var storage = window.localStorage;
+		if (storage.user != undefined) {
+			var url = "http://192.168.43.188:8080/product/select/selectByMoHuUser/" + ProductName+"/"+storage.user;
+			
+		} else {
+			var url = "http://192.168.43.188:8080/product/select/selectByMoHu/" + ProductName;
+		}
 		mui.ajax(url, {
 			dataType: 'json', //服务器返回json格式数据
 			type: 'get', //HTTP请求类型
@@ -107,14 +113,7 @@
 				console.log(type);
 			}
 		});
-		var storage = window.localStorage;
-		if (storage.user != undefined) {
-			// 			var toUrl1 = "page/pubthing.html";
-			// 			$('#pub').attr('href', toUrl1);
-		} else {
-			// 			var toUrl2 = "page/login.html";
-			// 			$('#pub').attr('href', toUrl2);
-		}
+
 		mui.init({
 			swipeBack: true, //启用右滑关闭功能;
 		});

@@ -17,11 +17,9 @@ mui.ajax(url, {
 	type: 'get', //HTTP请求类型
 	timeout: 10000, //超时时间设置为10秒；
 	success: function(data) {
-		console.log("success");
 		var mypub = data.data.list;
 		if (mypub.length != 0) {
 			for (var i = 0; i < mypub.length; i++) {
-				console.log(mypub[i].productName);
 				html +=
 					'<div  class="shoppingCart"><div class="layer"></div><ul class="ulList">'
 				html += '<li class="liList mui-table-view-cell">'
@@ -37,6 +35,7 @@ mui.ajax(url, {
 				html +=
 					'<div class="shopContent">' + mypub[i].productText + '</div>'
 				// html += '</div>'
+				html += '<button style="margin-left:150px;" onclick="removeCollect(' + mypub[i].productId + ')">取消收藏</button>'
 				html += '<button style="margin-left:150px;color: #fff;background: #f22f4a;" onclick="WantBuy(' + mypub[i].collectProductId +
 					',' + mypub[i].productPrice +
 					')" id="goumai">我要买</button>'
@@ -57,6 +56,43 @@ mui.ajax(url, {
 		console.log(type);
 	}
 });
+
+function removeCollect(value) {
+	console.log(value);
+	console.log(userId);
+	var btnArray = ['否', '是'];
+	mui.confirm('是否取消收藏此闲置宝贝？', '', btnArray, function(e) {
+		if (e.index == 1) {
+			var requDataCollect = {
+				collectProductId: value,
+				collectUserId: userId
+			}
+			console.log(requDataCollect.collectProductId);
+			console.log(requDataCollect.collectUserId);
+			var urlDelete = "http://192.168.43.188:8080/order/deleteCollect";
+			mui.ajax(urlDelete, {
+				data: requDataCollect,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				async: false,
+				contentType: 'application/json;charset=UTF-8',
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					console.log("success")
+			mui.alert('已取消此物品收藏', '嗨转小Tip', function() {
+				location.reload();
+			});
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(type);
+				}
+			});
+		} else {
+			mui.toast('宝贝仍在收藏当中');
+		}
+	})
+
+}
 mui.init();
 mui.init({
 	pullRefresh: {

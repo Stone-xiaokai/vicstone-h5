@@ -253,7 +253,12 @@
 		});
 	</script>
 	<script type="text/javascript">
-		var url = "http://192.168.43.188:8080/product/select/product/18/0";
+if (storage.user != undefined) {
+	var url = "http://192.168.43.188:8080/product/select/product/"+storage.user+"/0";
+}else{
+			var url = "http://192.168.43.188:8080/product/select/product/0/0";
+	
+}
 		mui.ajax(url, {
 			dataType: 'json', //服务器返回json格式数据
 			type: 'get', //HTTP请求类型

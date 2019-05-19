@@ -79,10 +79,10 @@
 			<div style="background-color: #FFFFFF;height:160px;padding-top:50px">
 				<div style="float: left;height:80px;width:80px;margin-left:20px; margin-top:10px;border:1px dashed #AAAAAA">
 					<input id="camera" type="file" accept="image/*" capture="camera" href="javascript:;" style="margin-left:8px;"
-					 multiple="multiple" placeholder="必须上传三张图片"/>
+					 multiple="multiple" placeholder="必须上传三张图片" />
 					<!-- <div class="mui-icon mui-icon-camera" style="color:#AAAAAA"></div> -->
 					<div style="margin-left: 5px;
-    margin-bottom: 7px;color: #AAAAAA;font-size: 12px;">最多上传三张</div>
+    margin-bottom: 7px;color: #AAAAAA;font-size: 12px;">必须上传三张</div>
 				</div>
 				<div id="imgdiv" style="float: left;margin-left:20px ;margin-top:10px;">
 					<ul id="imgs" style="display: flex;" class="mui-table-view mui-grid-view">
@@ -104,15 +104,13 @@
 					</div>
 					<div class="mui-input-row">
 						<label>价格</label>
-						<input type="text" class="mui-input-clear" placeholder="请输入宝贝品牌" v-model="pubthing.jiage">
+						<input type="text" class="mui-input-clear" placeholder="请输入宝贝价格" v-model="pubthing.jiage">
 					</div>
 					<div class="mui-input-row">
 						<label>分类</label>
 						<div>
 							<select id="first" onchange="setSecond(this.value)" style="width: 100px;" v-model="pubthing.dalei">
 								<option value="0" selected="selected">点击此处选择</option>
-								<option value="1">广西</option>
-								<option value="4">广东</option>
 							</select>
 							<select id="second" style="margin-left:10px;width: 100px;" v-model="pubthing.xiaolei">
 							</select>
@@ -143,11 +141,12 @@
 			success: function(data) {
 				var leibie = data.data.list;
 				var sec = document.getElementById('first');
-				sec.options.length = 0; //清空二级菜单项
+				// 				sec.options.length = 0; //清空二级菜单项
+				// 				sec.options[0] = new Option("点击此处选择", "点击此处选择", true, true);
 				mui.each(leibie, function(index, item) {
 					var id = item.id,
 						name = item.name;
-					sec.options[0] = new Option("点击此处选择", "点击此处选择")
+
 					sec.options.add(new Option(name, id))
 				});
 
@@ -183,7 +182,7 @@
 					mui.each(leibie, function(index, item) {
 						var id = item.id,
 							name = item.name;
-						sec.options[0] = new Option("点击此处选择", "点击此处选择")
+						sec.options[0] = new Option("点击此处选择", "点击此处选择", true, true);
 						sec.options.add(new Option(name, id))
 
 
@@ -340,6 +339,7 @@
 					console.log(files);
 				},
 				publish: function() {
+					
 					var userId = '';
 					var storage = window.localStorage;
 					if (storage.user != undefined) {
@@ -351,7 +351,89 @@
 					var dalei = this.pubthing.dalei;
 					var xiaolei = this.pubthing.xiaolei;
 					var miaoshu = this.pubthing.miaoshu;
+					console.log(name);
+					var priceReg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+					if (name == '' || pinpai == '' || jiage == '' || dalei == '' || xiaolei == '' || miaoshu ==
+						'') {
+						mui.alert('请将信息填写完整并正确填写', '嗨转小Tip', function() {});
+					} else {
+						if (!priceReg.test(jiage)) {
+							mui.alert('请将价格正确填写', '嗨转小Tip', function() {});
+						} else {
+							let formData = new FormData();
+							formData.append('file', document.getElementById('camera').files);
+							console.log(document.getElementById('camera').files[0])
+							console.log(filearrs.length)
+							formData.append('file1', filearrs[0]);
+							formData.append('file2', filearrs[1]);
+							formData.append('file3', filearrs[2]);
+							if (filearrs.length != 3) {
+								mui.alert('必须上传三张照片', '嗨转小Tip', function() {});
+							} else {
+								mui.alert('请耐心等待，正在发布...', '嗨转小Tip', function() {});
+								this.$http.post('http://192.168.43.188:8080/upload/setFileUploads', formData, {
+									method: 'post',
+									headers: {
+										'Content-Type': 'multipart/form-data'
+									}
+								}).then(function(res) {
+									var pic1 = res.data.data.path[0];
+									var pic2 = res.data.data.path[1];
+									var pic3 = res.data.data.path[2];
+									var dizhis = $("#place").text();
+									console.log(userId + "," + name + "," + pinpai + "," + jiage + "," + dalei + "," + xiaolei + "," + dizhis +
+										"," + miaoshu + "," + pic1 + "," + pic2 + "," + pic3); //
 
+									this.$http.post('http://192.168.43.188:8080/product/save/product', {
+										productName: name,
+										productBrand: pinpai,
+										productPrice: jiage,
+										productBigCategoryId: dalei,
+										productSmallCategoryId: xiaolei,
+										productAddress: dizhis,
+										productText: miaoshu,
+										productSrcOne: pic1,
+										productSrcTwo: pic2,
+										productSrcThree: pic3,
+										productStatus: "1",
+										productUserId: userId,
+										productRecommend: "0"
+									}, {
+										emulateJSON: true
+									}).then(result => {
+										var result = result.body;
+										console.log(result.code);
+										console.log(result.data);
+										mui.alert('发布成功了哦', '嗨转小Tip', function() {
+											mui.openWindow({
+												id: 'index',
+												url: '../index.html',
+												createNew: true,
+												show: {
+													aniShow: 'pop-in'
+												},
+												extras: { //extras里面的就是参数了
+													// name: data.data
+												},
+												waiting: {
+													autoShow: true, //自动显示等待框，默认为true
+												}
+											});
+										});
+										// });
+									}).catch(function(error) {
+										console.log(error);
+									})
+
+
+								}).catch(function(error) {
+									console.log(error);
+								})
+
+							}
+						}
+
+					}
 					//获取图片元素
 					// 					var files = document.getElementsByClassName('imgtest');
 					// 					var fileSrc = files.src;
@@ -359,67 +441,8 @@
 					// 					const file = new Image(files[0].src);
 					// console.log(file.name);
 					// const fileimg = new File(files[0].src,'Screenshot_2019-05-10-10-25-41-741_com.miui.home.png');
-					let formData = new FormData();
-					formData.append('file', document.getElementById('camera').files);
-					console.log(document.getElementById('camera').files[0])
-					console.log(filearrs.length)
-					formData.append('file1', filearrs[0]);
-					formData.append('file2', filearrs[1]);
-					formData.append('file3', filearrs[2]);
-					this.$http.post('http://192.168.43.188:8080/upload/setFileUploads', formData, {
-						method: 'post',
-						headers: {
-							'Content-Type': 'multipart/form-data'
-						}
-					}).then(function(res) {
-						var pic1 = res.data.data.path[0];
-						var pic2 = res.data.data.path[1];
-						var pic3 = res.data.data.path[2];
-						var dizhis = $("#place").text();
-						console.log(userId + "," + name + "," + pinpai + "," + jiage + "," + dalei + "," + xiaolei + "," + dizhis +
-							"," + miaoshu + "," + pic1 + "," + pic2 + "," + pic3); //
 
-						this.$http.post('http://192.168.43.188:8080/product/save/product', {
-							productName: name,
-							productBrand: pinpai,
-							productPrice: jiage,
-							productBigCategoryId: dalei,
-							productSmallCategoryId: xiaolei,
-							productAddress: dizhis,
-							productText: miaoshu,
-							productSrcOne: pic1,
-							productSrcTwo: pic2,
-							productSrcThree: pic3,
-							productStatus: "1",
-							productUserId: userId,
-							productRecommend: "0"
-						}, {
-							emulateJSON: true
-						}).then(result => {
-							var result = result.body;
-							console.log(result.code);
-							console.log(result.data);
-							mui.alert('发布成功了哦', '嗨转小Tip', function() {
-								mui.openWindow({
-									id: 'index',
-									url: '../index.html',
-									createNew: true,
-									show: {
-										aniShow: 'pop-in'
-									},
-									extras: { //extras里面的就是参数了
-										// name: data.data
-									},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-									}
-								});
-							});
-						});
-					}).catch(function(error) {
-						console.log(error);
-					})
-				}
+				},
 			}
 		});
 		var filearrs = [];
@@ -427,21 +450,29 @@
 			var fileTag = document.getElementById('camera');
 			fileTag.onchange = function() {
 				var file = fileTag.files[0];
-				filearrs.push(file);
-				console.log(filearrs.length);
-				var fileReader = new FileReader();
-				fileReader.onloadend = function() {
+				if (filearrs.length < 3) {
+					filearrs.push(file);
+					console.log(filearrs.length);
+					var fileReader = new FileReader();
+					fileReader.onloadend = function() {
 
-					if (fileReader.readyState == fileReader.DONE) {
-						var newLi = document.createElement("li");
-						newLi.innerHTML = '<img class="imgtest" src="' + fileReader.result + '" />' +
-							'<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>';
-						document.getElementById("imgs").append(newLi);
-					}
+						if (fileReader.readyState == fileReader.DONE) {
+							var newLi = document.createElement("li");
+							newLi.innerHTML = '<img class="imgtest" src="' + fileReader.result + '" />'
+							// newLi.innerHTML = '<img class="imgtest" src="' + fileReader.result + '" />' +
+							// '<div class="am-image-picker-item-remove" role="button" aria-label="Click and Remove this image"></div>';
+							document.getElementById("imgs").append(newLi);
+						}
 
-				};
+					};
 
-				fileReader.readAsDataURL(file);
+					fileReader.readAsDataURL(file);
+				} else {
+					mui.alert('只能上传三张', '嗨转小Tip', function() {
+
+					});
+				}
+
 			}
 		}
 	</script>

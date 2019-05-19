@@ -39,7 +39,7 @@
 				<span class="mui-icon icon-wode mine-toux" style="font-size:35px; color: #f6f6f6;"></span>
 				<a id="logining" href="login.html" class="mui-tab-label" style="font-size:18px; padding-left:20px; color: #fff;">点击登录</a>
 				<div id="username" class="mui-tab-label" style="font-size:18px; padding-left:20px; color: #fff;display: none;"></div>
-				<button id="logout" style="display: none;margin-left: 100px;margin-top: 20px;">退出登录</button>
+				<button id="logout" style="display: none;position: absolute;top:4.1rem;right:2.1rem ;">退出登录</button>
 			</div>
 		</div>
 		<div class="mine-style">
@@ -68,7 +68,7 @@
 		</div>
 		<div class="line-bottom"></div>
 		<div class="mine-style">
-			<a class="mine-cell" href="#javasript">
+			<a class="mine-cell" id="shouhuodizhi">
 				<span class="mui-icon icon-dizhi" style="line-height: 60px; color: green;"></span>
 				<span style="color: #222;line-height: 55px;">收货地址</span>
 				<span class="mui-icon mui-icon-arrowright" style="line-height: 55px;color: #aaa;float: right;"></span>
@@ -104,6 +104,8 @@
 			$('#myorder').attr('href', toUrlMyorder);
 			var toUrlMyShoucang = "mycollect.html";
 			$('#myshoucang').attr('href', toUrlMyShoucang);
+			var toUrlMyAddress = "myaddress.html";
+			$('#shouhuodizhi').attr('href', toUrlMyAddress);
 			document.getElementById("username").innerHTML = storage.username;
 			document.getElementById("logining").style.display = "none";
 			document.getElementById("username").style.display = "inline";
@@ -115,6 +117,7 @@
 			$('#mypub').attr('href', toUrl4);
 			$('#myorder').attr('href', toUrl4);
 			$('#myshoucang').attr('href', toUrl4);
+			$('#shouhuodizhi').attr('href', toUrl4);
 		}
 		mui('.mui-bar-tab').on('tap', 'a', function() {
 			location.href = this.getAttribute('href');
@@ -131,6 +134,7 @@
 					var toUrl4 = "login.html";
 					$('#pub').attr('href', toUrl4);
 					$('#mypub').attr('href', toUrl4);
+					$('#shouhuodizhi').attr('href', toUrl4);
 				} else {
 
 				}

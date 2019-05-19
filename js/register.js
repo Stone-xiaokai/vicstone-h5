@@ -36,44 +36,59 @@ function getPasswordBlur() {
 
 			}
 		});
-		if(check == true){
-							// mui.openWindow('mail.html');
+		if (check == true) {
+			// mui.openWindow('mail.html');
 			console.log(mui("#loginValue")[0].value);
-			var requData = {
-				username: mui("#loginValue")[0].value,
-				password: mui("#passwordValue")[0].value,
-				city: mui("#addressValue")[0].value,
-				phone: mui("#phoneValue")[0].value
-			};
-			mui.ajax('http://192.168.43.188:8080/member/insertUser', {
-				data: requData,
-				dataType: 'json', //服务器返回json格式数据
-				type: 'post', //HTTP请求类型
-				contentType: 'application/json;charset=UTF-8',
-				timeout: 10000, //超时时间设置为10秒；
-				success: function(data) {
-					console.log(data);
-					if (data.code = "200") {
-						mui.openWindow({
-							id: 'login.html',
-							url: 'login.html',
-							createNew:true, //会有一直返回不回去的风险
-							show: {
-								aniShow: 'pop-in'
-							},
-							extras: { //extras里面的就是参数了
-								name: data.data
-							},
-							waiting: {
-								autoShow: true, //自动显示等待框，默认为true
+
+			if (mui("#passwordValue")[0].value != mui("#passwordValueTwo")[0].value) {
+				mui.alert('两次输入的密码不一致', '嗨转小Tip', function() {});
+			} else {
+				var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+				if (!myreg.test(mui("#phoneValue")[0].value)) {
+					mui.alert('请输入有效的手机号', '嗨转小Tip', function() {});
+				} else {
+					var requData = {
+						username: mui("#loginValue")[0].value,
+						password: mui("#passwordValue")[0].value,
+						city: mui("#addressValue")[0].value,
+						phone: mui("#phoneValue")[0].value
+					};
+					mui.ajax('http://192.168.43.188:8080/member/insertUser', {
+						data: requData,
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						contentType: 'application/json;charset=UTF-8',
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							console.log(data);
+							if (data.code == "200") {
+								mui.openWindow({
+									id: 'login.html',
+									url: 'login.html',
+									createNew: true, //会有一直返回不回去的风险
+									show: {
+										aniShow: 'pop-in'
+									},
+									extras: { //extras里面的就是参数了
+										name: data.data
+									},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+									}
+								});
+							} else {
+								mui.alert('用户名或者手机号已被注册', '嗨转小Tip', function() {
+
+								});
 							}
-						});
-					}
-				},
-				error: function(xhr, type, errorThrown) {
-			
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
 				}
-			});
+			}
+
 		}
 	})
 
